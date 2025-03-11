@@ -119,10 +119,8 @@ func TestSetStatus(t *testing.T) {
 }
 
 func TestGetByClient(t *testing.T) {
-	db, err := ConnectDb()
-	if err != nil {
-		require.NoError(t, err)
-	}
+	t.Parallel()
+	db := setupTestDB(t)
 	defer db.Close()
 	store := NewParcelStore(db)
 
