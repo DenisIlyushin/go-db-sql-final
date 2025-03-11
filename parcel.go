@@ -36,7 +36,9 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return p, sql.ErrNoRows
+			return p, fmt.Errorf("Посылка с номером %d не найдена", number)
+			// для тестов было проще просто вернуть ошибку
+			// return p, sql.ErrNoRows
 		}
 		return p, fmt.Errorf("ошибка при получении посылки: %w", err)
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -64,7 +65,10 @@ func TestAddGetDelete(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = store.Get(parcel.Number)
-	require.ErrorIs(t, sql.ErrNoRows, err)
+	expectedErrorMsg := fmt.Sprintf("Посылка с номером %d не найдена", parcel.Number)
+	assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
+	// проверка по сутевой ошибке, раскомментировать строку 41 в parcel.go
+	// require.ErrorIs(t, sql.ErrNoRows, err)
 }
 
 func TestSetAddress(t *testing.T) {
