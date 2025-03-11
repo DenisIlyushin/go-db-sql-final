@@ -14,7 +14,6 @@ func NewParcelStore(db *sql.DB) ParcelStore {
 	return ParcelStore{db: db}
 }
 
-// Добавление новой посылки в БД
 func (s ParcelStore) Add(p Parcel) (int, error) {
 	stmt := `INSERT INTO parcel (client, status, address, created_at) VALUES (?, ?, ?, ?)`
 	res, err := s.db.Exec(stmt, p.Client, p.Status, p.Address, time.Now().UTC().Format(time.RFC3339))
@@ -30,7 +29,6 @@ func (s ParcelStore) Add(p Parcel) (int, error) {
 	return int(id), nil
 }
 
-// Получение информации о посылке по номеру
 func (s ParcelStore) Get(number int) (Parcel, error) {
 	var p Parcel
 	stmt := `SELECT number, client, status, address, created_at FROM parcel WHERE number = ?`
@@ -46,7 +44,6 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 	return p, nil
 }
 
-// Получение всех посылок клиента
 func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 	var parcels []Parcel
 	stmt := `SELECT number, client, status, address, created_at FROM parcel WHERE client = ?`
@@ -71,7 +68,6 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 	return parcels, nil
 }
 
-// Обновление статуса посылки
 func (s ParcelStore) SetStatus(number int, status string) error {
 	stmt := `UPDATE parcel SET status = ? WHERE number = ?`
 	_, err := s.db.Exec(stmt, status, number)
@@ -81,7 +77,6 @@ func (s ParcelStore) SetStatus(number int, status string) error {
 	return nil
 }
 
-// Изменение адреса доставки (только для статуса "registered")
 func (s ParcelStore) SetAddress(number int, address string) error {
 	parcel, err := s.Get(number)
 	if err != nil {

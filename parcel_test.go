@@ -41,7 +41,6 @@ func ConnectDb() (*sql.DB, error) {
 }
 
 func TestAddGetDelete(t *testing.T) {
-	// prepare
 	db, err := ConnectDb()
 	if err != nil {
 		require.NoError(t, err)
@@ -93,7 +92,7 @@ func TestSetAddress(t *testing.T) {
 	require.NoError(t, err)
 
 	err = store.SetAddress(num, "another address")
-	require.Error(t, err) // Должна быть ошибка
+	require.Error(t, err)
 }
 
 func TestSetStatus(t *testing.T) {
